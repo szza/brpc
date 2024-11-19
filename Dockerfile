@@ -14,7 +14,7 @@
 # limitations under the License.
 
 # A image for building/testing brpc
-FROM ubuntu:20.04
+FROM ubuntu:24.04
 
 # prepare env
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -37,6 +37,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libsnappy-dev && \
         apt-get clean -y
 
-RUN git clone https://github.com/apache/brpc.git
+RUN apt-get update && apt-get install -y --no-install-recommends  clangd
+
+# RUN git clone https://github.com/apache/brpc.git
+COPY . brpc
 RUN cd brpc && sh config_brpc.sh --headers=/usr/include --libs=/usr/lib && \
     make -j "$(nproc)"
